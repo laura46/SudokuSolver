@@ -1,0 +1,37 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+    ViewData["UnitClass"] = Model.FieldIsValid ? "given" : "given invalid"; 
+}
+<form class="sudoku" method="post">
+    <div class="field" >
+        @for (int row = 0; row < 9; row++)
+        {
+            @for (int col = 0; col < 9; col++)
+            {
+                if (Model.UserInputPosition[row, col])
+                {
+                    @Html.TextBoxFor(m => Model.Field[row][col], htmlAttributes: new { Class = ViewData["UnitClass"] });
+                }
+                else
+                {
+                    @Html.TextBoxFor(m => Model.Field[row][col]);
+                }
+            }
+        }
+    </div>
+    <div class="info">
+        <div class="rules">
+            <h3>Sudoku rules</h3>
+            <h6>Only numbers 1-9 are allowed on the field.</h6>
+            <h6>You have to fill every row, column and block.</h6>
+            <h6>Duplicate values are not allowed in a row, column or block.</h6>
+        </div>
+        <span class="error">@Error.GetMessage()</span>
+        <div>
+            <button asp-page-handler="Solve" class="main" type="submit">Solve field</button>
+            <button asp-page-handler="Clear" class=accent type="submit">Clear field</button>
+        </div>
+    </div>
+</form>
